@@ -1,0 +1,202 @@
+
+Simple Data Transfer Unit
+==================
+
+LD*
+STR*
+PUSH*
+POP*
+
+
+===================
+Arithmetic Logic Unit
+
+MOV*
+MOVW*
+MOVWS*
+MOVH*
+MOVHS*
+MOVB*
+MOVBS*
+MOVN*
+MOVNE*
+MOVGT*
+MOVGE*
+MOVEQ*
+MOVZ*
+MOVLT*
+MOVLE*
+MOVC*
+ADD*
+SUB*
+INC*
+DEC*
+MUL*
+SMUL*
+DIV*
+SDIV*
+NEG*
+CMP*
+AND*
+OR*
+NOT*
+NAND*
+XOR*
+TEST*
+ROTL*
+ROTR*
+SHFL*
+SHFR*
+NOP*
+SEO
+LEA
+FGET
+FPUT
+UNIC
+
+
+EDIV
+ESDIV
+CPUID
+
+========================
+Floating Point Unit
+
+FP Data Transfer Unit
+
+FLD
+FSTR
+FPUSH
+FPOP
+
+FP Arithmetic Logic Unit
+
+FDOCK
+FGMOV
+FMOV
+FMOVN
+FMOVNE
+FMOVGT
+FMOVGE
+FMOVEQ
+FMOVZ
+FMOVLT
+FMOVLE
+FADD
+FSUB
+FMUL
+FDIV
+FINC
+FDEC
+FWH
+FFRA
+FRU
+FRD
+FSIN
+FCOS
+FSEC
+FCSC
+FCOT
+FCMP
+FDDOCK
+FDGMOV
+FDMOV
+FDMOVN
+FDMOVNE
+FDMOVGT
+FDMOVGE
+FDMOVEQ
+FDMOVZ
+MOVLT
+MOVLE
+FDADD
+FDSUB
+FDMUL
+FDDIV
+FDINC
+FDDEC
+FDWH
+FDFRA
+FDRU
+FDRD
+FDSIN
+FDCOS
+FDTAN
+FDSEC
+FDCSC
+FDCOT
+FDCMP
+
+
+======================
+Control Unit
+
+->Branch Controller (10 opcodes)
+GO
+GOC
+GONE
+GOGT
+GOGE
+GOE
+GOL
+GOZ
+GOLE
+GOPR
+
+->Interrupt Controller
+INTS (Call software interrupt from protected mode)
+SSVEC (Set software interrupt vector)
+GSVEC (Get software interrupt vector)
+GRETI (Interrupt information return)
+SPRRE (Set standard protected mode interrupt pointer)
+GPRRE (Get standard protected mode interrupt pointer)
+SHIPT (Set hardware interrupt pointer)
+GHIPT (Get hardware interrupt pointer)
+SVMFH (Set a virtual memory fault handler)
+GVMFH (Get a virtual memory fault handler)
+SPRIN (Set preemption)
+GPRIN (Get preemption)
+
+
+
+
+->MMU Controller
+SVMM (Set virtual memory mode (flat, paging, segmentation))
+GVMM (Get virtual memory mode)
+SVMSZ (Set virtual memory size)
+GVMSZ (Get virtual memory size)
+SVMTP (Set virtual memory table address)
+GVMTP (Get virtual memory table address)
+SMMIO (Set memory mapped I/O address space)
+GMMIO (Get memory mapped I/O address space)
+SDMA (Set DMA data)
+GDMA (Get DMA data)
+SDMAI (Set DMI complete interrupt)
+GDMAI (Get DMA complete interrupt)
+
+
+
+
+->VPU Control
+CTOT
+CTMP
+CSTAT
+CEX
+CSTOP
+CLR
+STOP
+SHDWN
+
+
+
+
+
+
+
+
+
+
+
+
+
+

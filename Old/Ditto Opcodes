@@ -1,0 +1,304 @@
+List of Ditto Registers
+
+
+Available Registers:
+
+ARM: r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13 (sp), r14 (lr)
+
+Intel: EAX, EBX, ECX, EDX, EBI, ESI, EDI, ESI, R8, R9, R10, R11, R12, R13, R14, R15
+
+EDX, EAX are implicit in MUL and DIV operations
+
+<--VM Registers mapped to physical registers-->
+
+CDI/CWI (Instruction Register CWR)
+ARM: r0
+Intel: R13
+
+
+IL1/TMP1
+ARM: r1
+Intel: EBX
+
+
+IL2/TMP2
+ARM: r2
+Intel: EDX
+
+
+OL1/TMP3
+ARM: r3
+Intel: EDI
+
+
+OL2/TMP4
+ARM: r4
+Intel: ESI
+
+RD1 - RD7 / RW1 - RW7 (General Purpose)
+ARM: r5 - r10, r12
+Intel: R8 - R13, CDC
+
+FLAGS
+ARM: r11
+Intel: R14
+
+CDS/CWS (Stack Pointer)
+ARM: r13
+Intel: ESP
+
+CDB/CWB (Base/Frame Pointer)
+ARM: r14
+Intel: EBP
+
+PRIN (Total number of instructions to be executed)
+ARM: r14
+Intel: R14
+
+<--VM Registers mapped to non-paged RAM-->
+RD7, RD8
+
+PRPS
+PRMP
+PRPF
+PRPI
+HVEC
+SVEC
+SIRA
+
+
+
+<--Privileged Mode Registers-->
+
+<--Control-->
+PRIN
+FLAGS
+
+<--MMU Control (paging)-->
+PRPS (Page size register)
+PRPP (Page table pointer)
+PRPF (Page fault handler)
+PRPM (Page fault memory address)
+PRPI (Page fault instruction pointer)
+
+<--MMU Control (segmentation)-->
+PRSP (Segment table pointer)
+PRSF (Segmentation fault pointer)
+PRSM (Segmentation fault memory address)
+PRSI (Segmentation fault instruction pointer)
+
+
+<--Interrupts-->
+HVEC (Hardware Interrupt vector table pointer)
+SVEC (Software Interrupt vector table pointer)
+SIRA (Software Interrupt vector return address)
+
+
+
+
+List of Ditto Instructions
+
+//Arithmetic (All operations occur between registers)
+NOP (No operation)
+ADD (Addition)
+SUB (Subtraction)
+MUL (Unsigned Multiplication)
+SMUL (Signed Multiplication)
+DIV (Unsigned Division)
+SDIV (Signed Division)
+INC (Increment)
+DEC (Decrement)
+NEG (Negate)
+CMP (Compare)
+
+//Data transfer
+
+<--Register to Regsiter-->
+MOV (Move)
+MOVS (Move Signed Data)
+
+<--Register to Memory-->
+STR (Store item in memory address)
+PUSH (Push data onto stack)
+
+<--Memory to Register-->
+LD (Load item from memory address into register)
+POP (Pop data from stack)
+
+//Bitwise operations (All operations occur between registers)
+AND (Bitwise AND)
+OR (Bitwise OR)
+NOT (Bitwise NOT)
+NAND (Bitwise NOT AND)
+XOR (Bitwise exclusive OR)
+ROTL (Rotate left)
+ROTR (Rotate right)
+SHFL (Shift left)
+SHFR (Shift right)
+MASK (Equivalent to AND)
+FLIP (Equivalent to NOT)
+TEST (Similar to AND, but doesn't store result)
+
+//Branch instructions (All operations occur between registers).
+GO (Go to location)
+GONE (Go to location if not equal to)
+GOJG (Go to location if greater than)
+GOGE (Go to location if greater than or equal to)
+GOE (Go to location if equal to)
+GOL (Go to location if less than)
+GOLE (Go to location if less than or equal to)
+GOZ (Go to location if zero)
+
+
+//Protected mode context switch
+INTS (Protected mode software interrupt)
+EXEC (Equivalent to GO)
+
+//Floating point instructions (The following ops occur between registers)
+FMOV (Floating point move)
+FADD (Floating point add)
+FSUB (Floating point subtract)
+FMUL (Floating point multiplication)
+FDIV (Floating point division)
+FINC (Floating point increment)
+FDEC (Floating point decrement)
+FDEC (Floating point get whole portion)
+FEMOV (Extended floating point move)
+FEADD (Extended floating point add)
+FESUB (Extended floating point subtraction)
+FEMUL (Extended floating point multiplication)
+FEDIV (Extended floating point division)
+
+//Floating point instructions (Transfer data to and from memory)
+FLD (Load floating point from memory)
+FSTR (Store floating point value in memory)
+
+//Privileged mode instructions.
+
+GOPR (Jump/Execute in protected mode)
+CTOT (Number of cores)
+CGO (Execute on core)
+CSTOP (Stop core)
+CCLR (Cache clear)
+LNUM (Line number)
+IOSND (Send items over I/O Bus)
+STOP (Shutdown)
+
+
+SPRPS (Set page size register)
+GPRPS (Get page size)
+SPRPP (Set page table pointer)
+GPRPP (Get page table pointer)
+SPRPF (Set page fault handler)
+GPRPF (Get page fault handler)
+GPRPM (Get the memory address that triggered the page fault)
+GPRPI (Get the instruction pointer that was used at the time of the page fault)
+
+SPRSP (Set segment table pointer)
+GPRSP (Get segment table pointer)
+SPRSF (Set segmentation fault pointer)
+GPRSF (Get segmentation fault pointer)
+GPRSM (Get segmentation fault memory address)
+GPRSI (Get segmentation fault instruction pointer)
+
+
+SHVEC (Set the address of the MMIO vector table)
+GHVEC (Get the address of the MMIO vector table)
+SSVEC (Set the address of the software interrupt vector table)
+GSVEC (Get the address of the software interrupt vector table)
+GSIRA (Get the software interrupt return address)
+
+
+
+<--Control-->
+PRIN
+FLAGS
+
+<--MMU Control (paging)-->
+PRPS (Page size register)
+PRPP (Page table pointer)
+PRPF (Page fault handler)
+PRPM (Page fault memory address)
+PRPI (Page fault instruction pointer)
+
+<--MMU Control (segmentation)-->
+PRSP (Segment table pointer)
+PRSF (Segmentation fault pointer)
+PRSM (Segmentation fault memory address)
+PRSI (Segmentation fault instruction pointer)
+
+
+<--Interrupts-->
+HVEC (Hardware Interrupt vector table pointer)
+SVEC (Software Interrupt vector table pointer)
+SIRA (Software Interrupt vector return address)
+
+--ALL REGISTERS--
+
+Mapped to Registers
+===================
+
+	IR
+	FLAGS
+	PRIN
+	RW1
+	RW2
+	RW3
+	RW4
+	RW5
+	RW6
+	RW7
+	RW8
+	RW9
+	RW10
+	CDS
+	CDB
+	
+Memory Array
+============
+
+0-3   | IP
+4-7   | HVEC
+8-11  | SVEC
+12-15 | SIRA
+16-19 | MMIO
+20-23 | SIRA
+24-27 | SVEC
+28-31 | SIRA
+32-35 | PRSP
+36-39 | PRSF
+40-43 | PRSM
+44-47 | PRSI
+48-51 | PRPS
+52-55 | PRPP
+56-59 | PRPF
+60-63 | PRPM
+64-67 | PRPI
+68-71 | IP
+72-75 | WD2
+76-79 | WD3
+80-83 | RD8
+84-87 | RD9
+88-91 | RD10
+
+Opcode Map Array
+================
+0-255 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

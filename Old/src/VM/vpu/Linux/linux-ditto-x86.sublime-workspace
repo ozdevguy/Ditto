@@ -1,0 +1,246 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "x86/alu/addsub.asm",
+			"settings":
+			{
+				"buffer_size": 302,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "<?php\n\nclass activationResults{\n\n	public $success;\n	public $msg;\n\n}\n\nclass packageData{\n\n	public $activationID;\n	public $totalChips;\n	public $totalRegistered;\n\n}\n\nclass chipData{\n\n	public $id;\n	public $activated;\n	public $registered;\n	public $isUser;\n	public $isList;\n	public $isItem;\n	public $isOwner;\n	public $isPlace;\n	public $isShipping;\n	public $isEmployee;\n	public $registeredItem;\n	public $registeredUser;\n\n}\n\nclass ilidManager{\n\n	//Database access.\n	private $db;\n\n	//User ID.\n	private $uid;\n\n	//Employee mode management ID.\n	private $management;\n\n\n	public function __construct($uid){\n\n		$this->uid = $uid;\n		$this->db = new database();\n		$this->management = 0;\n\n	}\n\n	public function enableEmployeeModeScanner($managementID){\n\n		$this->management = $managementID;\n\n	}\n\n	public function disableEmployeeModeScanner(){\n\n		$this->management = 0;\n\n	}\n\n	public function wake(){\n\n		$this->db = new database();\n	}\n\n	public function sleep(){\n\n\n	}\n\n	private function get_geoapi($lat, $long) {\n	    $get_API = \"http://maps.googleapis.com/maps/api/geocode/json?latlng=\";\n	    $get_API .= round($lat,2).\",\";\n	    $get_API .= round($long,2);         \n\n	    $jsonfile = file_get_contents($get_API.'&sensor=false');\n	    $jsonarray = json_decode($jsonfile);        \n\n	    if (isset($jsonarray->results[1]->formatted_address)) {\n	        return($jsonarray->results[1]->formatted_address);\n	    }\n	    else {\n	        return('Unknown');\n	    }\n	}\n\n	public function storeChipRead($deviceID, $ilid, $latitude, $longitude){\n\n		$this->db = new database();\n\n		//Store the chip in the scanned table, so the app can pick it up.\n		$this->db->queryNew(\"INSERT INTO ilapp_inventory_scanned_ilid (`ilid`, `dev`, `uid`, `lat`, `lon`) VALUES ('$ilid', '$deviceID', $this->uid, '$latitude', '$longitude')\");\n		\n\n		//Store a geotracking record.\n\n		$this->db->queryOld(\"SELECT `item_id` FROM il_instrument_smart_tags WHERE `tag_id` = '$ilid' AND `item_id` IS NOT NULL\");\n\n		if($this->db->total > 0)\n			$this->db->queryNew(\"INSERT INTO ilapp_inventory_geotrack (`uid`, `time`, `lat`, `lon`, `near`, `item`) VALUES ($this->uid, \" . date('U') . \", $latitude, $longitude, '\" . $this->get_geoapi($latitude, $longitude) . \"', \" . $this->db->data[0]['item_id'] . \")\");\n	\n	}\n\n\n	public function getLastScanned(){\n\n		//Get the last scanned ilid from the database.\n		$this->db->queryNew(\"SELECT ilid FROM ilapp_inventory_scanned_ilid WHERE uid = \".$this->uid);\n	\n		if($this->db->total > 0){\n\n			$ilid = $this->db->data[0]['ilid'];\n			$this->db->queryNew(\"DELETE FROM ilapp_inventory_scanned_ilid WHERE uid = \".$this->uid.\" AND ilid = '$ilid'\");\n			return $ilid;\n\n		}\n		else\n			return 0;\n\n	}\n\n	public function pullPackages(){\n\n		//Pull each of the user's packages.\n\n		if(!$this->management)\n			$this->db->queryOld(\"SELECT DISTINCT(`bid`) AS `package` FROM il_instrument_smart_tags WHERE `uid` = $this->uid\");\n		else\n			$this->db->queryOld(\"SELECT DISTINCT(`bid`) AS `package` FROM il_instrument_smart_tags WHERE `uid` = $this->management\");\n		\n		$dbDat = $this->db->data;\n		$dbTot = $this->db->total;\n\n		$data = array();\n\n		for($i = 0; $i < $dbTot; $i++){\n\n			$package = new packageData();\n\n			$this->db->queryOld(\"SELECT COUNT(item_id) AS registeredTotal, COUNT(tag_id) AS total FROM il_instrument_smart_tags WHERE `bid` = '\".$dbDat[$i]['package'].\"'\");\n\n			$package->totalChips = $this->db->data[0]['total'];\n			$package->activationID = $dbDat[$i];\n			\n\n			if($this->db->data[0]['registeredTotal'])\n				$package->totalRegistered = $this->db->data[0]['registeredTotal'];\n			else\n				$package->totalRegistered = 0;\n\n			$data[] = $package;\n\n		}\n\n		return $data;\n\n	}\n\n	public function activatePackage($activationCode){\n\n		$results = new activationResults();\n\n		//Check to see if this is a valid activation code.\n		$this->db->queryOld(\"SELECT tag_id FROM il_instrument_smart_tags WHERE `bid` = '$activationCode'\");\n	\n		if(!$this->db->total){\n\n			$results->success = false;\n			$results->msg = \"Invalid activation code.\";\n			return $results;\n\n		}\n\n		//Check to see if any this batch has already been registered.\n		$this->db->queryOld(\"SELECT tag_id FROM il_instrument_smart_tags WHERE `bid` = '$activationCode' AND `uid` IS NOT NULL AND `uid` <> 0\");\n\n		if($this->db->total > 0){\n\n			$results->success = false;\n			$results->msg = \"This package has already been activated.\";\n			return $results;\n\n		}\n\n		//Now, register the batch under the user's account.\n\n		if(!$this->management)\n			$this->db->queryOld(\"UPDATE il_instrument_smart_tags SET `uid` = $this->uid WHERE `bid` = '$activationCode'\");\n		else\n			$this->db->queryOld(\"UPDATE il_instrument_smart_tags SET `uid` = $this->management WHERE `bid` = '$activationCode'\");\n\n		$results->success = true;\n		$results->msg = \"Package activated successfully!\";\n		return $results;\n\n	}\n\n	public function basicChipDetails($ilid){\n\n		$this->db->queryOld(\"SELECT * FROM il_instrument_smart_tags WHERE tag_id = $ilid\");\n\n		if($this->db->total == 0)\n			return 0;\n\n		$data = new chipData();\n\n		$data->id = $ilid;\n		$data->activated = false;\n		$data->registered = false;\n		$data->isUser = false;\n		$data->isItem = false;\n		$data->isOwner = false;\n		$data->isList = false;\n		$data->isPlace = false;\n		$data->isShipping = false;\n		$data->registeredItem = 0;\n		$data->registeredUser = 0;\n		\n		if($this->db->data[0]['uid'] > 0)\n			$data->activated = true;\n\n\n		if($this->db->data[0]['inst_id'] || $this->db->data[0]['item_id']){\n\n			$data->registered = true;\n			$data->isItem = true;\n			$data->registeredItem = $this->db->data[0]['item_id'];\n\n		}\n\n		if($this->db->data[0]['type'] == 3){\n\n			$data->registered = true;\n			$data->isUser = true;\n\n		}\n\n		if($this->db->data[0]['type'] == 4){\n\n			$data->registered = true;\n			$data->isList = true;\n\n		}\n\n		if($this->db->data[0]['type'] == 5){\n\n			$data->registered = true;\n			$data->isPlace = true;\n\n		}\n\n		if($this->db->data[0]['type'] == 6){\n\n			$data->registered = true;\n			$data->isShipping = true;\n		}\n\n		if(!$this->management){\n\n			if($this->db->data[0]['uid'] == $this->uid)\n				$data->isOwner = true;\n\n		}\n		else{\n\n			if($this->db->data[0]['uid'] == $this->management)\n				$data->isOwner = true;\n\n		}\n		\n\n		return $data;\n\n\n	}\n}\n?>",
+			"file": "/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/apcnct/app_platform_1/php/ilid/ilidManager.php",
+			"file_size": 6167,
+			"file_write_time": 131043402150000000,
+			"settings":
+			{
+				"buffer_size": 6167,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/remHome/bcrawford/Development/Ditto/src/VM/arch/Linux/x86",
+		"/home/remHome/bcrawford/Development/Ditto/src/VM/arch/Linux/x86/alu"
+	],
+	"file_history":
+	[
+		"/home/remHome/bcrawford/Development/Ditto/src/VM/arch/Linux/ARM/alu/addsub.asm"
+	],
+	"find":
+	{
+		"height": 0.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "x86/alu/addsub.asm",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 302,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								296,
+								296
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/x86-assembly-textmate-bundle-master/x86_64 Assembly.tmbundle/Syntaxes/x86_64 Assembly.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/apcnct/app_platform_1/php/ilid/ilidManager.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6167,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "linux-ditto-x86.sublime-project",
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

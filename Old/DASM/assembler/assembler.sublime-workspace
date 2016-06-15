@@ -1,0 +1,260 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"men",
+				"mnemonic"
+			],
+			[
+				"REG",
+				"REG64"
+			],
+			[
+				"mnemonics",
+				"mnemonics64"
+			],
+			[
+				"mne",
+				"mnemonic"
+			],
+			[
+				"opR",
+				"opR1Reg"
+			],
+			[
+				"form",
+				"formatMask"
+			],
+			[
+				"opc",
+				"opcodeFormat"
+			],
+			[
+				"opco",
+				"opcodeFormats"
+			],
+			[
+				"mn",
+				"mnemonic"
+			],
+			[
+				"me",
+				"mnemonics"
+			],
+			[
+				"hash",
+				"hashVal"
+			],
+			[
+				"test",
+				"testDictionary"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/remHome/bcrawford/Development/Ditto/DASM/assembler"
+	],
+	"file_history":
+	[
+		"/home/remHome/bcrawford/Development/Ditto/DASM/assembler/utilities/dictionary.c",
+		"/home/remHome/bcrawford/Desktop/Ditto Assembler/assembler/utilities/dictionary.h",
+		"/home/remHome/bcrawford/Desktop/Ditto Assembler/assembler/formatting/formats.c",
+		"/home/remHome/bcrawford/Desktop/Ditto Assembler/assembler/dasm.c",
+		"/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/apcnct/app_platform_1/js/item/viewItem.js",
+		"/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/apcnct/app_platform_1/js/people/peopleManager.js",
+		"/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/apcnct/app_platform_1/js/dash/dash.js",
+		"/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/apcnct/app_platform_1/js/scanner/savedPlaceManager.js",
+		"/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/apcnct/app_platform_1/js/profile/profile.js",
+		"/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/apcnct/app_platform_1/js/ilid/ilidManager.js",
+		"/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/apcnct/app_platform_1/index2.html",
+		"/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/apcnct/app_platform_1/js/scanner/scanner.js",
+		"/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/apcnct/app_platform_1/js/scanner/scanlist.js",
+		"/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/apcnct/app_platform_1/js/people/userManager.js",
+		"/home/remHome/bcrawford/Desktop/Ditto Assembler/assembler/utilities/dictionary.c",
+		"/home/remHome/bcrawford/Desktop/IL Demo/index2.html",
+		"/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/apcnct/app_platform_1/js/actions/reportStolen.js",
+		"/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/apcnct/app_platform_1/js/actions/addilid.js",
+		"/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/html/demo/index.html",
+		"/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/html/index.html",
+		"/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/apcnct/app_platform_1/js/render/uniui.js",
+		"/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/apcnct/app_platform_1/php/session/userSession.php",
+		"/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/apcnct/app_platform_1/php/list/listManager.php",
+		"/run/user/1001/gvfs/sftp:host=162.209.1.145/root/www/apcnct/app_platform_1/js/item/addItem.js",
+		"/home/remHome/bcrawford/Desktop/Ditto Assembler/assembler/utilities/utilities.h",
+		"/home/remHome/bcrawford/Desktop/heapsort.c",
+		"/home/remHome/bcrawford/Desktop/Ditto Assembler/assembler/opcodes.c",
+		"/home/remHome/bcrawford/Desktop/jmpTest.asm",
+		"/home/remHome/bcrawford/Development/Ditto/src/VM/arch/Linux/ARM/alu/vpu.asm",
+		"/home/remHome/bcrawford/Development/Ditto/src/VM/arch/Linux/ARM/alu/addsub.asm"
+	],
+	"find":
+	{
+		"height": 26.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"Repair",
+			"battery",
+			"Move I",
+			"View",
+			"profile-subscri",
+			"My Stuff",
+			"confirmGEo",
+			"physical location",
+			"additional information",
+			"build",
+			"Save Item",
+			"save",
+			"8",
+			"createDic"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "assembler.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

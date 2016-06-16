@@ -5,6 +5,7 @@ Test
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "error.c"
 #include "dictionary.h"
@@ -44,6 +45,18 @@ int main(int argc, char* argv[]){
 	}
 
 	_dictionary_destroy(opcodes);
+
+
+	input_descriptor* id = _input_create_descriptor();
+
+	_input_add_open(id, "test.txt");
+
+	fline* ln = _input_get_line(id);
+	
+
+	while(ln != 0)
+		ln = _input_get_line(id);
+
 
 	printf("End test...\n");
 	

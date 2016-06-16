@@ -32,8 +32,7 @@ This file contains the structures for maintaining data about open files.
 
 */
 
-
-typedef struct {
+struct file_descriptor{
 
 	//Standard file object.
 	FILE* fp;
@@ -45,9 +44,11 @@ typedef struct {
 	unsigned int line;
 
 	//Next file descriptor.
-	file_descriptor* next;
+	struct file_descriptor* next;
 
-} file_descriptor;
+};
+
+typedef struct file_descriptor file_descriptor;
 
 
 //Input descriptor structure.

@@ -43,8 +43,8 @@ typedef struct{
 
 void _dasm_error_file_nonexistant(char* filename){
 
-	printf("DASM | Error: The file \"%s\" does not seem to exist. Are you sure the path is correct?\n");
-	exit();
+	printf("DASM | Error: The file \"%s\" does not seem to exist. Are you sure the path is correct?\n", filename);
+	exit(0);
 
 }
 

@@ -26,19 +26,21 @@ Last Revision: N/A
 
 =========================================================================
 
-libdasm.h
+dstructs.c
 
-The Grand Kahuna of dasm. libdasm.h is the main header that links everything together.
+This file contains the structures used to build the data, symbol, and bss tables.
+
 
 */
 
 
-#include <stdbool.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "libdasm/dictionary.h"
-#include "libdasm/error.h"
-#include "libdasm/input.h"
-#include "libdasm/tracker.h"
-#include "libdasm/parser.h"
+//A text segment stub.
+typedef struct{
+
+	//Stub address.
+	unsigned long addr;
+
+	//Next stub.
+	struct stub* next;
+
+} stub;

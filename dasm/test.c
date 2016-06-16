@@ -8,6 +8,10 @@ int main(int argc, char* argv[]){
 
 	printf("Start test...\n");
 
+	_parser_begin("test.txt");
+
+	/*
+
 	dictionary* opcodes = _dictionary_create(3);
 
 	int dat1 = 23;
@@ -59,6 +63,8 @@ int main(int argc, char* argv[]){
 	}
 
 	_input_cleanup(id);
+	*/
+
 
 
 	printf("End test...\n");

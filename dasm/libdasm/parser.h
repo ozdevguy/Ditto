@@ -26,19 +26,10 @@ Last Revision: N/A
 
 =========================================================================
 
-libdasm.h
+parser.h
 
-The Grand Kahuna of dasm. libdasm.h is the main header that links everything together.
+This is the header file for the parser functions.
 
 */
 
-
-#include <stdbool.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "libdasm/dictionary.h"
-#include "libdasm/error.h"
-#include "libdasm/input.h"
-#include "libdasm/tracker.h"
-#include "libdasm/parser.h"
+#include "parser/parser.c"

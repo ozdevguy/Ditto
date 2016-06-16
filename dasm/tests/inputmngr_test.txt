@@ -1,0 +1,24 @@
+
+_set:
+	add r1, r2,            r3
+	str [0x123], r1
+	mov r2, r3
+                      	mov r2, r3
+
+
+*
+	mov r2, r3
+	mov r2, r3
+	mov r2, r3
+	mov r2, r3
+	mov r2, r3
+	mov r2, r3
+	mov r2, r3
+	mov r2, r3
+	mov r2, r3
+	mov r2, r3
+	mov r2, r3
+
+
+	mov r1, r3
+	mov r4, r3

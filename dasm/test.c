@@ -2,14 +2,7 @@
 Test
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-
-#include "error.c"
-#include "dictionary.h"
-#include "input.h"
+#include "libdasm.h"
 
 int main(int argc, char* argv[]){
 
@@ -54,8 +47,18 @@ int main(int argc, char* argv[]){
 	fline* ln = _input_get_line(id);
 	
 
-	while(ln != 0)
+	while(ln != 0){
+
 		ln = _input_get_line(id);
+
+		if(!ln)
+			break;
+
+		printf("%s\n", ln->line);
+
+	}
+
+	_input_cleanup(id);
 
 
 	printf("End test...\n");

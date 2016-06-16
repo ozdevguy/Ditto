@@ -26,36 +26,53 @@ Last Revision: N/A
 
 =========================================================================
 
-dictionary.h
+fdesc.c
 
-This is the header file for the dictionary functions, which allow the program to build a fast lookup dictionary of items via the use of a
-hash table.
+This file contains the structures for maintaining data about open files.
 
 */
 
-#include <string.h>
 
-#include "dictionaryStructures.c"
-#include "dictionary.c"
+typedef struct {
 
+	//Standard file object.
+	FILE* fp;
 
-//Calculate a unique dictionary hash value.
-unsigned int _dictionary_hash(char*);
+	//File name.
+	char* fname;
 
-//Create a new dictionary _create_dictionary(starting size (dictionary entries)) -> Returns a new dictionary object.
-dictionary* _dictionary_create(unsigned int);
+	//Line number.
+	unsigned int line;
 
-//Destroy a dictionary _dictionary_destroy(dictionary)
-unsigned short _dictionary_destroy(dictionary*);
+	//Next file descriptor.
+	file_descriptor* next;
 
-//Insert an item into the dictionary _dictionary_insert(dictionary, object pointer, label string)
-unsigned short _dictionary_insert(dictionary*, void*, unsigned int);
-
-//Look for an item in the dictionary _dictionary_lookup
-void* _dictionary_lookup(dictionary*, unsigned int);
-
-//Remove an item from the dictionary.
-unsigned short _dictionary_remove(dictionary*, unsigned int);
+} file_descriptor;
 
 
+//Input descriptor structure.
+typedef struct {
+
+	//A linked list of file descriptors!
+	file_descriptor* fp;
+
+	//The last file descriptor.
+	file_descriptor* last;
+
+	//Total number of file descriptor pointers.
+	unsigned int fnum;
+
+} input_descriptor;
+
+
+//Current line.
+typedef struct {
+
+	//Line string.
+	char* line;
+
+	//Line length.
+	unsigned short length;
+
+} fline;
 

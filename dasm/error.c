@@ -26,36 +26,30 @@ Last Revision: N/A
 
 =========================================================================
 
-dictionary.h
+error.c
 
-This is the header file for the dictionary functions, which allow the program to build a fast lookup dictionary of items via the use of a
-hash table.
+This file contains the functions for building a log of errors during the assembly process.
 
 */
 
-#include <string.h>
+typedef struct{
 
-#include "dictionaryStructures.c"
-#include "dictionary.c"
+	char* errors;
 
-
-//Calculate a unique dictionary hash value.
-unsigned int _dictionary_hash(char*);
-
-//Create a new dictionary _create_dictionary(starting size (dictionary entries)) -> Returns a new dictionary object.
-dictionary* _dictionary_create(unsigned int);
-
-//Destroy a dictionary _dictionary_destroy(dictionary)
-unsigned short _dictionary_destroy(dictionary*);
-
-//Insert an item into the dictionary _dictionary_insert(dictionary, object pointer, label string)
-unsigned short _dictionary_insert(dictionary*, void*, unsigned int);
-
-//Look for an item in the dictionary _dictionary_lookup
-void* _dictionary_lookup(dictionary*, unsigned int);
-
-//Remove an item from the dictionary.
-unsigned short _dictionary_remove(dictionary*, unsigned int);
+	unsigned int totalErrors;
 
 
+} dasm_errors;
 
+void _dasm_error_file_nonexistant(char* filename){
+
+	printf("DASM | Error: The file \"%s\" does not seem to exist. Are you sure the path is correct?\n");
+	exit();
+
+}
+
+void _dasm_error_file_invalid(){
+
+	int i;
+
+}

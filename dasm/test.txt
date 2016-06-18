@@ -1,4 +1,6 @@
 
+                           .arch32       #Set the architecture for 32 bit.
+
 _set:
 	add r1, r2,            r3
 	str [0x123], r1

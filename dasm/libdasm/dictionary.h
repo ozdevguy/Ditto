@@ -57,5 +57,8 @@ void* _dictionary_lookup(dictionary*, unsigned int);
 //Remove an item from the dictionary.
 unsigned short _dictionary_remove(dictionary*, unsigned int);
 
+//Get the size of a dictionary.
+unsigned int _dictionary_size(dictionary*);
+
 
 

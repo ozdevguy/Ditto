@@ -32,22 +32,31 @@ This file contains the functions that parse the assembly input.
 
 */
 
-void _parse_global_line(fline* line){
-
-	printf("Global Line: %s\n", line->line);
-
-}
-
 void _parse_data_line(fline* line){
 
 
 }
 
+void _parse_bss_line(fline* line){
+
+
+}
+
+void _parse_text_line(fline* line){
+
+
+}
+
+void _parser_setup(){
+
+
+}
 
 void _parser_begin(char* ifpath){
 
 	//Create a new tracker.
 	global_tracker = _tracker_create();
+
 
 	//Create a new input descriptor.
 	input_descriptor* id = _input_create_descriptor();
@@ -63,19 +72,29 @@ void _parser_begin(char* ifpath){
 
 		if(ln->line[0] != '#'){ //Skip comments...
 
+
 			switch(global_tracker->section_current){
 
 				case INPUT_SECTION_GLOBAL:
 					_parse_global_line(ln);
+					break;
 
 				case INPUT_SECTION_DATA:
 					_parse_data_line(ln);
+					break;
 
 				case INPUT_SECTION_BSS:
-					_parse_data_line(ln);
+					_parse_bss_line(ln);
+					break;
 
 				case INPUT_SECTION_TEXT:
-					_parse_data_text(ln);
+					_parse_text_line(ln);
+					break;
+
+				default:
+					_parse_global_line(ln);
+					break;
+
 
 			}
 

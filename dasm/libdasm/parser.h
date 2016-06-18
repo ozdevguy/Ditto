@@ -32,4 +32,10 @@ This is the header file for the parser functions.
 
 */
 
+//#include "parser/pstruct.c"
+//#include "parser/setup.c"
+//#include "parser/data.c"
+#include "parser/global.c"
+//#include "parser/text.c"
 #include "parser/parser.c"
+

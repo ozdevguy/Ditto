@@ -26,21 +26,22 @@ Last Revision: N/A
 
 =========================================================================
 
-libdasm.h
+globals.c
 
-The Grand Kahuna of dasm. libdasm.h is the main header that links everything together.
+This file contains dasm globals (outside of the tracker).
 
 */
 
-typedef unsigned char byte;
+enum{DASM_ARCH32, DASM_ARCH64, DASM_STARTFUNC, DASM_NOSTART};
 
-#include <stdbool.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "libdasm/dictionary.h"
-#include "libdasm/error.h"
-#include "libdasm/input.h"
-//#include "libdasm/data.h"
-#include "libdasm/tracker.h"
-#include "libdasm/parser.h"
+
+typedef struct {
+
+	//Architecture identifier.
+	unsigned int arch;
+
+
+
+} dasm_config;
+
+

@@ -26,21 +26,18 @@ Last Revision: N/A
 
 =========================================================================
 
-libdasm.h
+pstruct.c
 
-The Grand Kahuna of dasm. libdasm.h is the main header that links everything together.
+This file contains the necessary dictionary structures for the parser.
+
 
 */
 
-typedef unsigned char byte;
 
-#include <stdbool.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "libdasm/dictionary.h"
-#include "libdasm/error.h"
-#include "libdasm/input.h"
-//#include "libdasm/data.h"
-#include "libdasm/tracker.h"
-#include "libdasm/parser.h"
+typedef struct{
+
+	//Global preferences dictionary.
+	dictionary* global_prefs;
+
+
+} dasm_parser;

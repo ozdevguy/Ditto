@@ -64,6 +64,14 @@ static void dictionary_reinsert(dictionary* newTable, dictionary_entry entry){
 
 }
 
+unsigned int _dictionary_size(dictionary* source){
+
+	if(!source)
+		return 0;
+	
+	return source->size;
+}
+
 //Create a new hash table dictionary.
 dictionary* _dictionary_create(unsigned int startSize){
 

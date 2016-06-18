@@ -7,7 +7,6 @@ Test
 int main(int argc, char* argv[]){
 
 	printf("Start test...\n");
-
 	_parser_begin("test.txt");
 
 	/*

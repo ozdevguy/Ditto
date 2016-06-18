@@ -26,21 +26,16 @@ Last Revision: N/A
 
 =========================================================================
 
-libdasm.h
+datatable.c
 
-The Grand Kahuna of dasm. libdasm.h is the main header that links everything together.
+This file contains the functions necessary to maintain a data table. The data table is where
+items defined in the "data" section of an assembly program are stored for the object file.
+
 
 */
 
-typedef unsigned char byte;
+//Create a new data table.
+data_table* _dattable_create(){
 
-#include <stdbool.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "libdasm/dictionary.h"
-#include "libdasm/error.h"
-#include "libdasm/input.h"
-//#include "libdasm/data.h"
-#include "libdasm/tracker.h"
-#include "libdasm/parser.h"
+
+}

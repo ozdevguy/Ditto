@@ -68,7 +68,7 @@ unsigned int _dictionary_size(dictionary* source){
 
 	if(!source)
 		return 0;
-	
+
 	return source->size;
 }
 
@@ -85,6 +85,7 @@ dictionary* _dictionary_create(unsigned int startSize){
 	//Set defaults for the dictionary object.
 	nt->total = 0;
 	nt->size = startSize;
+	nt->loop = 0;
 
 	//Create the initial table.
 	nt->table = (dictionary_entry*)malloc(sizeof(dictionary_entry) * startSize);
@@ -145,8 +146,6 @@ unsigned int _dictionary_hash(char* input){
 //Destroy a hash table dictionary.
 unsigned short _dictionary_destroy(dictionary* source){
 
-	int i;
-
 	if(!source)
 		return 0;
 
@@ -158,6 +157,56 @@ unsigned short _dictionary_destroy(dictionary* source){
 	return 1;
 
 }
+
+//Destroy a hash table dictionary while also destroying linked values.
+unsigned short _dictionary_destroy_all(dictionary* source){
+
+	int i;
+	int size;
+
+	if(!source)
+		return 0;
+
+	size = source->size;
+
+	if(source->table){
+
+		for(i = 0; i < size; i++){
+
+			if(source->table[i].data)
+				free(source->table[i].data);
+
+		}
+
+		free(source->table);
+
+	}
+
+	free(source);
+
+	return 1;
+
+}
+
+
+//Loop through a dictionary.
+dictionary_entry* _dictionary_loop_get_entry(dictionary* source){
+
+	if(!source)
+		return 0;
+
+	if(source->loop < source->size){
+
+		return &(source->table[source->loop++]);
+
+	}
+	
+	source->loop = 0;
+	return 0;
+	
+}
+
+
 
 
 //Insert an item into the hash table.

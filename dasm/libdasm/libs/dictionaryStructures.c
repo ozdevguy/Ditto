@@ -47,5 +47,6 @@ typedef struct{
 	dictionary_entry* table;
 	unsigned int total;
 	unsigned int size;
+	unsigned int loop;
 
 } dictionary;

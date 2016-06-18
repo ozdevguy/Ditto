@@ -46,10 +46,13 @@ typedef struct{
 	int id;
 
 	//Data type.
-	int type;
+	short type;
+
+	//Data alignment.
+	short alignment;
 
 	//Data size.
-	int size;
+	unsigned int size;
 
 	//Data
 	byte* data;
@@ -136,9 +139,9 @@ typedef struct{
 typedef struct{
 
 	//Symbol table.
-	dictionary* symbol_table;
+	dictionary* sym_table;
 
 	//Data table.
-	data_table* data_table;w
+	data_table* dat_table;
 
 } unpackaged_object_data;

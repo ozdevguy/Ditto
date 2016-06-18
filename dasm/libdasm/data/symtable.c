@@ -43,6 +43,42 @@ dictionary* _symtable_create(){
 
 }
 
+//Destroy a symbol table.
+void _symtable_destroy(dictionary* symtable){
+
+	dictionary_entry* entry;
+	symbol* data;
+	stub *st, *tmp;
+
+	//Loop through the dictionary to get all values without relying on hash indices.
+	while((entry = _dictionary_loop_get_entry(symtable)) != 0){
+
+		data = entry->data;
+
+		if(data){
+
+			free(data->label);
+
+			st = data->stubs;
+
+			while(st){
+
+				tmp = st;
+				st = tmp->next;
+				free(tmp);
+
+			}
+
+			free(data);
+
+		}
+
+	}
+
+	_dictionary_destroy(symtable);
+
+}
+
 //Creare a symbol.
 symbol* _symtable_set_symbol(dictionary* table, char* label){
 
@@ -147,7 +183,7 @@ stub* _symtable_symbol_stub_getl(dictionary* table, char* label){
 }
 
 //Add a stub to a symbol.
-void _symtable_symbol_stub_add(symbol* sym, unsigned long ref){
+stub* _symtable_symbol_stub_add(symbol* sym, unsigned long ref){
 
 	stub* ns = (stub*)malloc(sizeof(stub));
 	ns->ref = ref;
@@ -167,6 +203,7 @@ void _symtable_symbol_stub_add(symbol* sym, unsigned long ref){
 		sym->stubs = ns;
 	}
 
+	return ns;
 
 }
 

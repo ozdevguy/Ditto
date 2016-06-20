@@ -33,6 +33,6 @@ This header includes the files for each of the major data handling paradigms of 
 */
 
 #include "data/dstructs.c"
-#include "data/package.c"
 #include "data/symtable.c"
 #include "data/datatable.c"
+#include "data/package.c"

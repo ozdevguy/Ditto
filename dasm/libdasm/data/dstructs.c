@@ -122,15 +122,15 @@ typedef struct{
 typedef struct{
 
 	//Data table.
-	void* d_table;
+	byte* d_table;
 	unsigned long d_table_size;
 
 	//BSS table.
-	void* bss_table;
+	byte* bss_table;
 	unsigned long bss_table_size;
 
 	//Symbol table.
-	void* symbol_table;
+	byte* symbol_table;
 	unsigned long symbol_table_size;
 
 
@@ -147,7 +147,7 @@ typedef struct{
 	//Data table.
 	data_table* dat_table;
 
-} unpackaged_object_data;
+} unpacked_object_data;
 
 
 
@@ -163,7 +163,7 @@ typedef struct{
 	//Symbol table size.
 	uint32_t symtable_size;
 
-	
+
 
 
 

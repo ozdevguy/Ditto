@@ -18,23 +18,33 @@ void main(int argc, char* argv[]){
 	
 	//Create some symbols.
 	symbol* sym1 = _symtable_set_symbol(symtable, "_start");
-	symbol* sym2 = _symtable_set_symbol(symtable, "msg1");
-	symbol* sym3 = _symtable_set_symbol(symtable, "msg2");
+	symbol* sym2 = _symtable_set_symbol(symtable, "_func_new");
+	symbol* sym3 = _symtable_set_symbol(symtable, "_func");
 
-	//Create some data entries, and define the symbols as such.
-	int id1;
-	char* msg1 = "Hello world!\n";
-	int msg1len = strlen(msg1);
-	char* msg1a = (char*)malloc(msg1len);
-	memcpy(msg1a, msg1, msg1len);
+	//Define each symbol...
+	_symtable_symbol_define(sym1, SYMBOL_REF_TEXT, 1234567);
+	_symtable_symbol_define(sym2, SYMBOL_REF_TEXT, 23455666);
+	_symtable_symbol_define(sym3, SYMBOL_REF_TEXT, 48733384);
+
+	//Add stubs to sym1.
+	_symtable_symbol_stub_add(sym1, 12);
+	_symtable_symbol_stub_add(sym1, 34);
+
+	//Add stubs to sym2.
+	_symtable_symbol_stub_add(sym2, 56);
+	_symtable_symbol_stub_add(sym2, 78);
+	_symtable_symbol_stub_add(sym2, 910);
+	_symtable_symbol_stub_add(sym2, 1112);
+
+	//Add stub to sym3.
+	_symtable_symbol_stub_add(sym3, 1314);
+
+	//Package the symbol table.
+	packaged_object_data dat = _data_package(symtable, dtable);
+
+	_data_unpack(&dat);
 
 
-	_dattable_add(dtable, DATA_ASCII, msg1len, (byte*)msg1a, &id1);
-	_symtable_symbol_define(sym2, SYMBOL_REF_DATA, id1);
-
-	printf("%s\n", _symtable_get_symbol(symtable, "_start")->label);
-
-	_data_package(symtable, dtable);
 
 	_symtable_destroy(symtable);
 	

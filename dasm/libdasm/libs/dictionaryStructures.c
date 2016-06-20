@@ -42,11 +42,13 @@ typedef struct {
 
 
 //Dictionary object.
-typedef struct{
+struct dictionary{
 
 	dictionary_entry* table;
 	unsigned int total;
 	unsigned int size;
 	unsigned int loop;
 
-} dictionary;
+};
+
+typedef struct dictionary dictionary;

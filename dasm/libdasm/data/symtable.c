@@ -106,6 +106,7 @@ symbol* _symtable_set_symbol(dictionary* table, char* label){
 
 	ns->hash = hash;
 	ns->label = lb;
+	ns->lsize = llength;
 	ns->def = 0;
 
 	_dictionary_insert(table, ns, hash);
@@ -158,7 +159,7 @@ void _symtable_symbol_define(symbol* sym, short type, unsigned long ref){
 	if(!sym)
 		return;
 
-	sym->def = 1;
+	sym->def = true;
 	sym->r_type = type;
 	sym->ref = ref;
 

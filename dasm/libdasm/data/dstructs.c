@@ -99,11 +99,14 @@ typedef struct{
 	//Label.
 	char* label;
 
+	//Label size.
+	int lsize;
+
 	//Defined?
-	byte def;
+	bool def;
 
 	//Symbol reference type.
-	short r_type;
+	uint8_t r_type;
 
 	//Symbol reference.
 	unsigned long ref;
@@ -145,3 +148,23 @@ typedef struct{
 	data_table* dat_table;
 
 } unpackaged_object_data;
+
+
+
+typedef struct{
+
+
+	//Format type.
+	uint8_t frmt_type;
+
+	//Data table starting position.
+	uint32_t symtable_start;
+
+	//Symbol table size.
+	uint32_t symtable_size;
+
+	
+
+
+
+} file_info;

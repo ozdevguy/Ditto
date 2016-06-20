@@ -74,6 +74,7 @@ data_entry* _dattable_add(data_table* table, short type, unsigned int size, byte
 	table->entries[table->total].type = type;
 	table->entries[table->total].size = size;
 	table->entries[table->total].data = data;
+	*id = table->total;
 
 	return &(table->entries[table->total++]);
 

@@ -38,7 +38,7 @@ with linear probing.
 static void dictionary_reinsert(dictionary* newTable, dictionary_entry entry){
 
 	//Get the theoretical position in the new hash table for this entry.
-	int tsize = newTable->size;
+	size_t tsize = newTable->size;
 	int i = entry.hashval % tsize;
 
 	//Check if the first mapped address is available.
@@ -247,7 +247,7 @@ unsigned short _dictionary_insert(dictionary* source, void* object, unsigned int
 }
 
 //Pull an item from the dictionary.
-void* _dictionary_lookup(dictionary* source, unsigned int hashval){
+void* _dictionary_lookup(dictionary* source, uint32_t hashval){
 
 	int i, j, size;
 

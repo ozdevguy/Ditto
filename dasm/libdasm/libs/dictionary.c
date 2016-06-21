@@ -48,7 +48,6 @@ static void dictionary_reinsert(dictionary* newTable, dictionary_entry entry){
 		while(newTable->table[i].hashval)			
 			i = ((i + 1) % tsize);
 
-
 	}
 
 	//Insert the entry into the correct position in the new table by copying values from the old table entry.
@@ -88,15 +87,42 @@ dictionary* _dictionary_create(unsigned int startSize){
 	nt->loop = 0;
 
 	//Create the initial table.
-	nt->table = (dictionary_entry*)malloc(sizeof(dictionary_entry) * startSize);
-	memset(nt->table, 0, startSize);
+	nt->table = (dictionary_entry*)calloc(sizeof(dictionary_entry) * startSize, 1);
 
 	return nt;
 
 }
 
+//Refactor the dictionary if needed (internal use only).
+static void refactor_dictionary(dictionary* source){
+
+	int i, total;
+
+	dictionary* nt;
+
+	if(!source)
+		return;
+
+	total = source->size;
+
+	nt = _dictionary_create(source->size);
+
+	for(i = 0; i < total; i++){
+
+		//Start reinserting entries into the new table.
+		if(source->table[i].hashval)
+			dictionary_reinsert(nt, source->table[i]);
+
+	}
+
+	//Perform the swap..
+	free(source->table);
+	source->table = nt->table;
+	free(nt);
+}
+
 //Expand the dictionary if needed (internal use only).
-static void expand_dictionary(dictionary* source){
+static unsigned int expand_dictionary(dictionary* source){
 
 	int i, total;
 
@@ -114,17 +140,18 @@ static void expand_dictionary(dictionary* source){
 		//Start reinserting entries into the new table.
 		if(source->table[i].hashval)
 			dictionary_reinsert(nt, source->table[i]);
+		
 
 
 	}
 
 	//Perform the swap..
-	source->total = nt->total;
-	source->size = nt->size;
-
+	source->size *= 2;
 	free(source->table);
 	source->table = nt->table;
 	free(nt);
+
+	return source->size;
 
 
 }
@@ -138,8 +165,8 @@ unsigned int _dictionary_hash(char* input){
 	while(input[i++])
 		hashval += (input[i - 1] * i);
 
-	return hashval;
 
+	return hashval;
 
 }
 
@@ -223,16 +250,18 @@ unsigned short _dictionary_insert(dictionary* source, void* object, unsigned int
 
 	//No room... Expand the hash table.
 	if(source->total == size)
-		expand_dictionary(source);
-
-	
+		size = expand_dictionary(source);
+		
 	//Check if the first mapped address is available.
 	if(source->table[i].hashval){
 
 		//Unlike the lookup and remove functions, the insert function does not need j, as it will mathematically never be able to enter an infinite loop.
 		//It will find any available space, and there will always be extra space, since no available space indicates a full table, and full tables are expanded.
-		while(source->table[i - 1].hashval)			
+		while(source->table[i].hashval){
+
 			i = ((i + 1) % size);
+		}
+	
 
 	}
 
@@ -260,11 +289,12 @@ void* _dictionary_lookup(dictionary* source, uint32_t hashval){
 		return 0;
 
 	//J is here to make sure we don't go into an infinite loop looking for a non-existant value.
-	while(source->table[i].hashval != hashval && j-- > 0)
+	while(source->table[i].hashval != hashval && j-- > 1)
 		i = ((i + 1) % size);
 
-	if(j)
+	if(j)		
 		return source->table[i].data;
+
 
 	return 0;
 
@@ -284,14 +314,17 @@ unsigned short _dictionary_remove(dictionary* source, unsigned int hashval){
 		return 0;
 
 	//J is here to make sure we don't go into an infinite loop looking for a non-existant value.
-	while(source->table[i].hashval != hashval && j-- > 0)
+	while(source->table[i].hashval != hashval && j-- > 1)
 		i = ((i + 1) % size);
 
 	if(j){
 
+		//The entry was found, we must now zero out the old value and refactor the table.
 		source->table[i].hashval = 0;
 		source->table[i].data = 0;
 		source->total--;
+
+		refactor_dictionary(source);
 		return 1;
 
 	}

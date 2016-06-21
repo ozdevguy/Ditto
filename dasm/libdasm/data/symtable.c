@@ -46,6 +46,7 @@ dictionary* _symtable_create(){
 //Destroy a symbol table.
 void _symtable_destroy(dictionary* symtable){
 
+	printf("\n\nDestroy a symtable...\n\n");
 	dictionary_entry* entry;
 	symbol* data;
 	stub *st, *tmp;
@@ -58,7 +59,6 @@ void _symtable_destroy(dictionary* symtable){
 		if(data){
 
 			free(data->label);
-
 			st = data->stubs;
 
 			while(st){
@@ -91,14 +91,12 @@ symbol* _symtable_set_symbol(dictionary* table, char* label){
 	int hash = _dictionary_hash(label);
 
 	//Check to make sure the symbol doesn't already exist.
-	if((sym = _dictionary_lookup(table, hash)) != 0){
-
+	if((sym = _dictionary_lookup(table, hash)) != 0)
 		return sym;
-	}
 
 	//If the symbol has not been created, do so now.
 	int llength = strlen(label);
-	char* lb = (char*)malloc(llength);
+	char* lb = (char*)calloc(llength, 1);
 
 	strcpy(lb, label);
 
@@ -108,6 +106,7 @@ symbol* _symtable_set_symbol(dictionary* table, char* label){
 	ns->label = lb;
 	ns->lsize = llength;
 	ns->def = 0;
+	ns->stubs = 0;
 
 	_dictionary_insert(table, ns, hash);
 
@@ -188,20 +187,22 @@ stub* _symtable_symbol_stub_add(symbol* sym, unsigned long ref){
 
 	stub* ns = (stub*)malloc(sizeof(stub));
 	ns->ref = ref;
+	ns->next = 0;
 
 	stub* cs = sym->stubs;
+
 
 	if(cs){
 
 		while(cs->next)
 			cs = cs->next;
-
 		cs->next = ns;
 
 	}
 	else{
 
 		sym->stubs = ns;
+
 	}
 
 	return ns;

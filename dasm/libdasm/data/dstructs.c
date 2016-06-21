@@ -76,7 +76,7 @@ typedef struct{
 
 
 /* SYMBOL TABLE */
-enum{SYMBOL_REF_DATA, SYMBOL_REF_BSS, SYMBOL_REF_TEXT};
+enum{SYMBOL_UNDEF, SYMBOL_REF_DATA, SYMBOL_REF_BSS, SYMBOL_REF_TEXT};
 
 //A text segment stub.
 struct stub{

@@ -78,73 +78,121 @@ static void data_package_symobject(packaged_object_data* p, byte* object, unsign
 static void data_unpack_symtable(packaged_object_data* p, unpacked_object_data* u){
 
 	//Create a new symbol table.
-	dictionary* symtable = _symtable_create();
 	byte* pool = p->symbol_table;
+	symbol* cs;
+	char label[255];
 
+	dictionary* symtable = _symtable_create();
+
+
+	//I represents our byte position within the symbol table object binary.
 	unsigned long i = 0;
-
-	/*
-	uint32_t symbol_size = *((uint32_t*)(p->symbol_table + i));
-
-	i += 35;
-
-	uint32_t symbol_size2 = *((uint32_t*)(p->symbol_table + i));
-
-	i += 19;
-
-	uint32_t symbol_size3 = *((uint32_t*)(p->symbol_table + i));
-
-	printf("%d\n", symbol_size);
-	printf("%d\n", symbol_size2);
-	printf("%d\n", symbol_size3);
-	*/
 
 	while(i < p->symbol_table_size){
 
+		//Get the size of the symbol, which is in the first 4 bytes.
 		uint32_t symbol_size = *((uint32_t*)(p->symbol_table + i));
-
 		i += 4;
+
+		//Get the length of the symbol label, which is 1 byte long and follows the symbol size.
 		uint8_t llength = *((uint8_t*)(p->symbol_table + i));
+		i += 1;
 
-		i++;
+		//Get the symbol flags, which is one byte long, and follows the symbol label length.
 		uint8_t flags = *((uint8_t*)(p->symbol_table + i));
+		bool def = ((flags & 0x80) >> 7);
+		unsigned short arch = ((flags & 0x60) >> 5);
+		unsigned short type = (flags & 0x1F);
+		i += 1;
 
-		i++;
-		uint32_t ref = *((uint8_t*)(p->symbol_table + i));
+		//Based on the flags, this was compiled for 32 bit systems.
+		if(!arch){
 
-		i += 4;
-
-		//Get the label.
-		char label[llength + 1];
-
-		memcpy(label, (p->symbol_table + i), llength);
-
-		label[llength] = 0;
-
-		printf("Label length: %d\n", llength);
-
-		i += llength;
-
-		//Create the symbol table entry.
-		symbol* sym = _symtable_set_symbol(symtable, label);
-
-
-		if(ref)
-			_symtable_symbol_define(sym, SYMBOL_REF_TEXT, ref);
-
-		int j = (symbol_size - 10 - llength) / 4;
-
-		for(j; j > 0; j--){
-
+			//Get the symbol's reference.
+			uint32_t ref = *((uint32_t*)(p->symbol_table + i));
 			i += 4;
+
+			//Get the label.
+			memset(label, 0, 255);
+			memcpy(label, (p->symbol_table + i), llength);
+
+			//Increment the byte position by the label length.
+			i += llength;
+
+			//Before we pull the stubs, we need to set up the symbol in the table.
+			symbol* sym = _symtable_set_symbol(symtable, label);
+
+			if(ref)
+				_symtable_symbol_define(sym, 1, ref);
+
+
+			//Pull the symbol stubs...
+			int j = (symbol_size - llength - 10);
+
+			uint32_t stubs[j];
+
+			if(j){
+
+				int k;
+
+				for(k = i; k < (i + j); k += 4){
+
+					//Current stub.
+					stubs[j - i] = *( (uint32_t*)(p->symbol_table + k) );
+						
+				}
+
+			}
+
+			i += j;
+
+
+		}
+		else{
+
+			//Get the symbol's reference.
+			uint64_t ref = *((uint64_t*)(p->symbol_table + i));
+			i += 8;
+
+			//Get the label.
+			memset(label, 0, 255);
+			memcpy(label, (p->symbol_table + i), llength);
+
+			//Increment the byte position by the label length.
+			i += llength;
+
+			//Before we pull the stubs, we need to set up the symbol in the table.
+			symbol* sym = _symtable_set_symbol(symtable, label);
+
+			if(ref)
+				_symtable_symbol_define(sym, 1, ref);
+
+
+			//Pull the symbol stubs...
+			int j = (symbol_size - llength - 10);
+
+			uint64_t stubs[j];
+
+			if(j){
+
+				int k;
+
+				for(k = i; k < (i + j); k += 8){
+
+					//Current stub.
+					stubs[j - i] = *( (uint64_t*)(p->symbol_table + k) );
+						
+				}
+
+			}
+
+			i += j;
 
 		}
 
-		printf("%s\n", label);
-
-		printf("%ld\n", i);
-
 	}
+
+	u->sym_table = symtable;
 
 }
 
@@ -178,8 +226,9 @@ static void data_package_symtable(dictionary* symtable, packaged_object_data* p)
 			//Now, set the flags.
 			flags = sym->r_type;
 
-			if(sym->def)
+			if(sym->def)				
 				flags += 128;
+			
 
 			//Count the number of stubs.
 			st_total = 0;
@@ -239,7 +288,7 @@ static void data_package_symtable(dictionary* symtable, packaged_object_data* p)
 			}
 			else{
 
-				//64 BIT ARCHITECTURE TARGET
+				//TODO: 64 BIT ARCHITECTURE TARGET
 			
 
 
@@ -286,5 +335,13 @@ unpacked_object_data _data_unpack(packaged_object_data* data){
 	data_unpack_symtable(data, &u);
 
 	return u;
+
+}
+
+//Free packaged items.
+void _data_free_packaged(packaged_object_data data){
+
+	//free(data.d_table);
+	free(data.symbol_table);
 
 }
